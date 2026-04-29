@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t cicd-k8s-demo:latest .'
@@ -19,16 +20,17 @@ pipeline {
             }
         }
 
+        stage('Restart Deployment') {
+            steps {
+                bat 'kubectl rollout restart deployment cicd-k8s-deployment'
+            }
+        }
+
         stage('Verify') {
             steps {
                 bat 'kubectl get pods'
                 bat 'kubectl get svc'
             }
         }
-        stage('Restart Deployment') {
-    steps {
-        bat 'kubectl rollout restart deployment cicd-k8s-deployment'
     }
-}
-        
 }
