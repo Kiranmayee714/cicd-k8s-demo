@@ -25,5 +25,15 @@ pipeline {
                 bat 'kubectl get svc'
             }
         }
+        stage('Restart Deployment') {
+    steps {
+        bat 'kubectl rollout restart deployment cicd-k8s-deployment'
+    }
+}
+        stage('Clean Up') {
+            steps {
+                bat 'kubectl delete -f k8s\\deployment.yaml'
+                bat 'kubectl delete -f k8s\\service.yaml'
+            }
     }
 }
